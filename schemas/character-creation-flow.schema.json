@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CharacterCreationFlow",
+  "type": "object",
+  "required": ["sessionId", "currentStep", "status", "data"],
+  "properties": {
+    "sessionId": { "type": "string" },
+    "currentStep": {
+      "type": "string",
+      "enum": ["START", "ARCHETYPE", "APPEARANCE", "STYLE", "IDENTITY_DETAILS", "PREVIEW", "CONFIRM"]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["DRAFT", "PUBLISHED"]
+    },
+    "data": {
+      "type": "object",
+      "properties": {
+        "archetype": { "type": "string" },
+        "visualFamily": { "type": "string" },
+        "displayName": { "type": "string" },
+        "handle": { "type": "string" },
+        "palette": { "type": "object" },
+        "layers": { "type": "object" }
+      }
+    },
+    "createdAt": { "type": "string" },
+    "updatedAt": { "type": "string" }
+  }
+}
