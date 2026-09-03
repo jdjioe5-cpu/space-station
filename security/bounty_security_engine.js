@@ -19,10 +19,10 @@ class BountySecurityEngine {
         let score = 0;
         const now = Date.now();
 
-        // Signal 1: Velocity Check (Claims within cooldown)
+        // Signal 1: Velocity Check (prior claims within cooldown window)
         const history = this.claimTimestamps.get(identityId) || [];
         const recent = history.filter(t => (now - t) < (this.velocityCooldownSeconds * 1000));
-        if (recent.length >= 2) score += 45; // rapid burst farming
+        if (recent.length >= 1) score += 45; // rapid burst within cooldown
 
         // Signal 2: Account Age / Newcomer Flag
         if (metadata.isNewcomer) score += 20;
