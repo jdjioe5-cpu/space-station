@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "IdentityVerification",
+  "type": "object",
+  "required": ["identityId", "verificationStatus", "privacySettings", "grantedCapabilities"],
+  "properties": {
+    "identityId": { "type": "string" },
+    "verificationStatus": {
+      "type": "string",
+      "enum": ["SELF_DECLARED", "DOCUMENT_BACKED", "CRYPTOGRAPHICALLY_PROVEN", "SYSTEM_VERIFIED"]
+    },
+    "privacySettings": {
+      "type": "object",
+      "properties": {
+        "showWalletPublicly": { "type": "boolean" },
+        "showCoordinatesPublicly": { "type": "boolean" },
+        "allowPublicCard": { "type": "boolean" }
+      }
+    },
+    "grantedCapabilities": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "isActive": { "type": "boolean" }
+  }
+}
