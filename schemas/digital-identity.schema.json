@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DigitalIdentity",
+  "type": "object",
+  "required": ["identityId", "displayName", "handle", "entityType", "verificationStatus", "version", "createdAt"],
+  "properties": {
+    "identityId": { "type": "string", "pattern": "^myz:id:[a-f0-9]{16,64}$" },
+    "displayName": { "type": "string" },
+    "handle": { "type": "string" },
+    "entityType": { "type": "string", "enum": ["HUMAN", "SIMULATED_ENTITY"] },
+    "verificationStatus": {
+      "type": "string",
+      "enum": ["SELF_DECLARED", "DOCUMENT_BACKED", "CRYPTOGRAPHICALLY_PROVEN", "SYSTEM_VERIFIED"]
+    },
+    "visualProfileRef": {
+      "type": "object",
+      "properties": {
+        "avatarId": { "type": "string" },
+        "visualFamily": { "type": "string" },
+        "avatarConfigUrl": { "type": "string" }
+      }
+    },
+    "fieldPrivacy": {
+      "type": "object",
+      "additionalProperties": { "type": "string", "enum": ["PUBLIC", "AUTHORIZED_ONLY", "PRIVATE_STATION_ONLY"] }
+    },
+    "provenance": {
+      "type": "object",
+      "properties": {
+        "creationSignature": { "type": "string" },
+        "latestChangeHash": { "type": "string" }
+      }
+    },
+    "version": { "type": "integer", "minimum": 1 },
+    "createdAt": { "type": "string" },
+    "updatedAt": { "type": "string" }
+  }
+}
