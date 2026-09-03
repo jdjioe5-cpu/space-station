@@ -7,9 +7,9 @@ async function runEconomyTests() {
     const engine = new MetaverseEconomyEngine();
 
     // 1. Initialize Balances
-    const alice = engine.initAccount('ALICE', 200, 50, 15);
+    const alice = engine.initAccount('ALICE', 1000, 50, 15);
     const bob = engine.initAccount('BOB', 50, 10, 5);
-    assert.strictEqual(alice.myz, 200);
+    assert.strictEqual(alice.myz, 1000);
     assert.strictEqual(bob.myz, 50);
     console.log('  ✅ 1. Identity balances initialized (MYZ strictly segregated from XP & Rep)');
 
@@ -26,7 +26,7 @@ async function runEconomyTests() {
     // 3. Purchase Item (Atomic Transfer)
     const receipt = engine.buyAsset('ALICE', listing.listingId);
     assert.strictEqual(receipt.status, 'CONFIRMED');
-    assert.strictEqual(engine.getBalance('ALICE').myz, 140); // 200 - 60
+    assert.strictEqual(engine.getBalance('ALICE').myz, 940); // 1000 - 60
     assert.strictEqual(engine.getBalance('BOB').myz, 110);   // 50 + 60
     assert(receipt.signature.length === 64);
     console.log(`  ✅ 3. Item purchased with atomic balance update and SHA-256 receipt [${receipt.signature.substring(0, 16)}...]`);
@@ -38,10 +38,9 @@ async function runEconomyTests() {
     }, /Insufficient MYZ balance/);
     console.log('  ✅ 4. Insolvent purchase blocked by balance guard');
 
-    // 5. Test Daily Spend Cap
-    const capTest = engine.listAsset('BOB', { assetName: 'Gold Trophy', priceMYZ: 480 });
+    // 5. Test Daily Spend Cap (Cap is 500. Alice spent 60. Now buy 460 -> 60 + 460 = 520 > 500)
+    const capTest = engine.listAsset('BOB', { assetName: 'Gold Trophy', priceMYZ: 460 });
     assert.throws(() => {
-        // Alice already spent 60; 60 + 480 = 540 > 500 cap
         engine.buyAsset('ALICE', capTest.listingId);
     }, /Daily spend limit exceeded/);
     console.log('  ✅ 5. Daily expenditure cap prevented excessive outflow');
