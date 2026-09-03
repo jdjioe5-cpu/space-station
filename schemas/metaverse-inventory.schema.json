@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "MetaverseInventoryItem",
+  "type": "object",
+  "required": ["itemId", "name", "category", "slot", "isTransferable", "provenanceHash"],
+  "properties": {
+    "itemId": { "type": "string" },
+    "name": { "type": "string" },
+    "category": {
+      "type": "string",
+      "enum": ["WEARABLE", "BADGE", "PROP", "SPACE_MODULE"]
+    },
+    "slot": {
+      "type": "string",
+      "enum": ["HEAD", "TORSO", "LEGS", "BADGE", "PROP"]
+    },
+    "rarity": {
+      "type": "string",
+      "enum": ["COMMON", "RARE", "EPIC", "LEGENDARY"]
+    },
+    "isTransferable": { "type": "boolean" },
+    "provenanceHash": { "type": "string" }
+  }
+}
