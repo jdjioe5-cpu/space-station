@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "MetaverseWorld",
+  "type": "object",
+  "required": ["worldId", "version", "zones", "defaultSpawnZone"],
+  "properties": {
+    "worldId": { "type": "string" },
+    "version": { "type": "string" },
+    "zones": { "type": "array" },
+    "defaultSpawnZone": { "type": "string" }
+  }
+}

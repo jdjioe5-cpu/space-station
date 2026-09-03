@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "MetaverseZone",
+  "type": "object",
+  "required": ["zoneId", "name", "accessPolicy", "portals", "persistentObjects"],
+  "properties": {
+    "zoneId": { "type": "string" },
+    "name": { "type": "string" },
+    "accessPolicy": {
+      "type": "string",
+      "enum": ["PUBLIC", "PRIVATE", "INVITE_ONLY"]
+    },
+    "portals": { "type": "array" },
+    "persistentObjects": { "type": "array" }
+  }
+}
