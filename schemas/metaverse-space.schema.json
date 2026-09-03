@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "MetaverseSpace",
+  "type": "object",
+  "required": ["spaceId", "name", "template", "ownerId", "accessPolicy"],
+  "properties": {
+    "spaceId": { "type": "string" },
+    "name": { "type": "string" },
+    "template": {
+      "type": "string",
+      "enum": ["PERSONAL_HOME", "ENTITY_SANCTUARY", "COMMUNITY_HUB", "EVENT_ARENA", "MARKETPLACE_ZONE", "LIFE_PILOT_ZONE"]
+    },
+    "ownerId": { "type": "string" },
+    "accessPolicy": {
+      "type": "string",
+      "enum": ["PUBLIC", "MEMBERS_ONLY", "INVITE_ONLY", "PRIVATE_OWNER"]
+    },
+    "maxOccupancy": { "type": "integer", "minimum": 1 },
+    "placedObjects": { "type": "array" }
+  }
+}
