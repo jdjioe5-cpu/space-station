@@ -20,7 +20,7 @@ async function runCardTests() {
 
     assert.strictEqual(card1.entityType, 'HUMAN');
     assert.strictEqual(card1.verificationBadge, 'VERIFIED');
-    assert.strictEqual(card1.abbreviatedId, 'ID_ALI...7192847'.substring(0, 14));
+    assert.strictEqual(card1.abbreviatedId, 'ID_ALI...2847');
     assert(!('walletAddress' in card1));
     assert(!('internalCoordinates' in card1));
     console.log('  ✅ 1. Human verified card model constructed with privacy masking');
