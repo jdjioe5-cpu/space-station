@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CharacterQuest",
+  "type": "object",
+  "required": ["questId", "title", "category", "xpReward", "myzReward", "requiredLevel"],
+  "properties": {
+    "questId": { "type": "string" },
+    "title": { "type": "string" },
+    "category": {
+      "type": "string",
+      "enum": ["PROFILE", "ONBOARDING", "COMMUNITY", "ECOLOGICAL", "LIFE_MRV"]
+    },
+    "xpReward": { "type": "integer", "minimum": 0 },
+    "myzReward": { "type": "number", "minimum": 0 },
+    "requiredLevel": { "type": "integer", "minimum": 1 }
+  }
+}
