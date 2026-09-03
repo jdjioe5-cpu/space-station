@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CharacterBounty",
+  "type": "object",
+  "required": ["bountyKey", "title", "rewardMYZ", "eligibilityCriteria"],
+  "properties": {
+    "bountyKey": {
+      "type": "string",
+      "enum": [
+        "character_created",
+        "identity_profile_completed",
+        "interactive_profile_enabled",
+        "identity_card_published",
+        "character_milestone"
+      ]
+    },
+    "title": { "type": "string" },
+    "rewardMYZ": { "type": "number", "minimum": 0 },
+    "eligibilityCriteria": { "type": "string" },
+    "status": {
+      "type": "string",
+      "enum": ["ACTIVE", "SUSPENDED", "DEPLETED"]
+    }
+  }
+}
