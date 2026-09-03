@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AvatarConfig",
+  "type": "object",
+  "required": ["avatarId", "seed", "visualFamily", "archetype", "colorPalette", "layers"],
+  "properties": {
+    "avatarId": { "type": "string" },
+    "seed": { "type": "string" },
+    "visualFamily": {
+      "type": "string",
+      "enum": ["CYBERPUNK", "HUMAN", "ALIEN"]
+    },
+    "archetype": { "type": "string" },
+    "colorPalette": {
+      "type": "object",
+      "properties": {
+        "primary": { "type": "string" },
+        "secondary": { "type": "string" },
+        "accent": { "type": "string" }
+      }
+    },
+    "layers": {
+      "type": "object",
+      "properties": {
+        "face": { "type": "string" },
+        "hair": { "type": "string" },
+        "eyes": { "type": "string" },
+        "outfit": { "type": "string" },
+        "accessory": { "type": "string" }
+      }
+    }
+  }
+}
