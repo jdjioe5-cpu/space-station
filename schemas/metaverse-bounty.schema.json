@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "MetaverseBounty",
+  "type": "object",
+  "required": ["bountyId", "title", "issuer", "proofType", "rewards", "status"],
+  "properties": {
+    "bountyId": { "type": "string" },
+    "title": { "type": "string" },
+    "issuer": { "type": "string" },
+    "zoneId": { "type": "string" },
+    "proofType": {
+      "type": "string",
+      "enum": ["SYSTEM_EVENT", "QUEST_COMPLETION", "CREATED_OBJECT", "MULTIPLAYER_EVENT", "USER_SUBMISSION", "SENSOR_DATA", "PARTNER_VALIDATION"]
+    },
+    "rewards": {
+      "type": "object",
+      "required": ["myz"],
+      "properties": {
+        "myz": { "type": "number", "minimum": 0 },
+        "xp": { "type": "number", "minimum": 0 },
+        "reputation": { "type": "number", "minimum": 0 }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": ["DRAFT", "PUBLISHED", "AVAILABLE", "CLAIMED", "IN_PROGRESS", "SUBMITTED", "VALIDATION", "APPROVED", "REWARDED", "REJECTED", "EXPIRED", "CANCELLED", "REVOKED"]
+    }
+  }
+}
