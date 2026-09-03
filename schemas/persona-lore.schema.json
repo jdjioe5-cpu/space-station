@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PersonaLore",
+  "type": "object",
+  "required": ["identityId", "version", "biography", "originStory", "declaredSkills", "personalityTraits"],
+  "properties": {
+    "identityId": { "type": "string" },
+    "version": { "type": "integer", "minimum": 1 },
+    "biography": { "type": "string" },
+    "originStory": { "type": "string" },
+    "interests": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "declaredSkills": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "personalityTraits": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "goals": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "affiliations": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "safetyStatus": {
+      "type": "string",
+      "enum": ["CLEAN", "FLAGGED", "REDACTED"]
+    }
+  }
+}
