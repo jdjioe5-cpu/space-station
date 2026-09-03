@@ -1,224 +1,142 @@
 # MyZubster Environmental Metaverse Specification
 
-**Version:** 0.1  
-**Status:** Architecture baseline  
-**Roadmap:** #41–#48  
-**Metaverse/Bounty foundation:** #31–#40
+**Version:** 0.1.0  
+**Status:** Architecture Baseline & Production Specification  
+**Roadmap Scope:** Issues #31–#48  
+**Core Target:** Resolves Issue #41 (P0)
 
-## 1. Vision
+---
 
-MyZubster Environmental Metaverse connects interactive digital worlds and missions with environmental observations, evidence, MRV validation and MYZ rewards.
+## 1. Vision & Core Philosophy
 
-Core chain:
+MyZubster Environmental Metaverse connects interactive digital worlds, entity-driven missions, real-world IoT telemetry, and scientific MRV (Monitoring, Reporting, and Verification) to create an auditable economic loop:
 
-`Metaverse → Environmental Mission → Bounty → Proof → Sensor/Data Evidence → MRV → Validation → MYZ Reward → Audit/Provenance → Replication/LIFE`
+```text
+Metaverse → Environmental Mission → Bounty → Proof → Sensor/Data Evidence → MRV Core → Validation → MYZ Reward → Audit/Provenance → Replication/LIFE
+```
 
-The metaverse is the interaction and visualization layer. It must not turn simulated, user-reported or unvalidated information into scientific claims.
+The metaverse serves as the spatial interaction and visualization layer. It strictly enforces cryptographic provenance so simulated, synthetic, or unvalidated data streams are never misrepresented as certified ecological claims.
 
-## 2. Evidence levels
+---
 
-| Level | Meaning | Reward eligibility |
-|---|---|---|
-| `demo` | simulated/test data | demo rewards only |
-| `user-reported` | participant-submitted observation | policy-dependent |
-| `sensor-backed` | observation linked to registered sensor/data source | eligible after automated/manual checks |
-| `partner-validated` | evidence reviewed by authorized scientific/institutional validator | highest-confidence tier |
+## 2. End-to-End Architecture Diagram
 
-Every UI and export must expose the evidence level.
+```mermaid
+flowchart TD
+    subgraph Metaverse["1. Metaverse & Interaction Layer (#39, #40, #45)"]
+        UI["Metaverse Pilot Zone UI"]
+        NPC["Pytho Entity Guardian"]
+        Board["Mission & Bounty Board"]
+    end
 
-## 3. Roles
+    subgraph DataIngestion["2. Ingestion & Telemetry Adapters (#44)"]
+        API["ApiAdapter (REST/JSON)"]
+        CSV["CsvAdapter (Time-Series)"]
+        IoT["IotAdapter (ESP32 / LoRaWAN)"]
+    end
 
-- **Participant** — accepts missions and submits evidence.
-- **Issuer** — creates an authorized bounty/mission.
-- **Entity/NPC** — interactive interface for missions; does not gain real permissions from narrative traits.
-- **Validator** — reviews evidence according to an explicit method.
-- **Partner** — operates a pilot, dataset or sponsored mission.
-- **Auditor** — can inspect provenance, validation and reward history according to permissions.
+    subgraph MRVCore["3. MRV Core & Provenance Chain (#42)"]
+        Normalizer["Unit Normalizer & Quality Flags"]
+        EvidenceBundle["MRV Evidence Package Generator"]
+        ProvenanceChain["Sequential SHA-256 Provenance Chain"]
+    end
 
-## 4. Mission and bounty lifecycle
+    subgraph Validation["4. Scientific & Partner Validation (#46)"]
+        Queue["Review Queue"]
+        Validators["Academic / Institutional Validators"]
+        Attestation["Signed Cryptographic Attestation"]
+    end
 
-`draft → published → available → claimed → in_progress → submitted → validation → approved → rewarded`
+    subgraph Rewards["5. Tokenomics & MYZ Disbursement (#43)"]
+        PolicyEngine["Reward Policy Engine"]
+        Receipt["Signed Disbursement Receipt"]
+        Ledger["MYZ Token Ledger"]
+    end
 
-Additional terminal states:
+    subgraph Scaling["6. Territorial Scaling & Reporting (#47, #48)"]
+        Blueprint["Territorial Replication Blueprint"]
+        Portal["Partner Operations Portal"]
+        Reports["CSV / PDF Compliance Reports"]
+    end
 
-`rejected | expired | cancelled | revoked`
+    UI --> Board
+    NPC --> Board
+    Board --> IoT & CSV & API
+    IoT & CSV & API --> Normalizer
+    Normalizer --> EvidenceBundle
+    EvidenceBundle --> ProvenanceChain
+    ProvenanceChain --> Queue
+    Queue --> Validators
+    Validators --> Attestation
+    Attestation --> PolicyEngine
+    PolicyEngine --> Receipt
+    Receipt --> Ledger
+    Ledger --> Portal
+    ProvenanceChain --> Blueprint
+    Blueprint --> Reports
+```
 
-No MYZ environmental outcome reward is released before the validation policy required by that bounty is satisfied.
+---
 
-## 5. Environmental evidence package
+## 3. Evidence Levels Taxonomy
 
-Minimum evidence package:
+To maintain regulatory rigor and avoid greenwashing, every evidence packet is classified into one of four immutable tiers:
 
-- `evidence_id`
-- `mission_id`
-- `bounty_id`
-- `identity_id` or privacy-preserving participant reference
-- evidence level
-- observation/source references
-- source/sensor identifier
-- timestamp
-- units and normalized values where applicable
-- quality flags
-- baseline/outcome references
-- validation method
-- validator reference
-- validation status
-- evidence/provenance hash
-- reward receipt reference when approved
+| Evidence Level | Definition & Ingestion Channel | Quality Assurance Criteria | MYZ Reward Eligibility |
+| :--- | :--- | :--- | :---: |
+| `demo` | Synthetic, unit-test, or benchmark data streams | Labeled `SIMULATED`; excluded from MRV credits | 0 MYZ (Sandbox only) |
+| `user-reported` | Community observational uploads (photos, GPS tags) | Baseline plausibility & heuristic filter | Policy-dependent (25 MYZ) |
+| `sensor-backed` | Authenticated hardware IoT node (e.g. NDIR CO2, DHT22) | Boundary protection & cryptographic provenance hash | Eligible (100 MYZ) |
+| `partner-validated` | Attested by certified university, utility, or NGO auditor | Multi-signature attestation & conflict-of-interest check | Highest tier (250 MYZ) |
 
-Raw data, normalized data and validation results must remain distinguishable.
+---
 
-## 6. MRV principles
+## 4. Roles & Permission Matrix
 
-MRV = Measurement, Reporting and Verification.
+| Role | Mission Creation | Evidence Submission | Evidence Review | Reward Claim | Audit Inspection |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **Participant** | ❌ | ✅ | ❌ | ✅ | Public Scope |
+| **Issuer** | ✅ | ❌ | ❌ | ❌ | Full Scope |
+| **Entity / NPC** | Dialogue only | ❌ | ❌ | ❌ | Narrative only |
+| **Validator** | ❌ | ❌ | ✅ | ❌ | Verification Scope |
+| **Partner** | Sponsored only | ❌ | ❌ | ❌ | Territorial Scope |
+| **Auditor** | ❌ | ❌ | Read-only | ❌ | Cryptographic Audit |
 
-The MyZubster MRV layer should provide:
+---
 
-1. source registration;
-2. timestamped observations;
-3. normalization and quality flags;
-4. provenance chain;
-5. evidence package creation;
-6. validation state machine;
-7. auditable corrections/versioning;
-8. structured export for partners and reporting.
+## 5. Mission & Bounty Lifecycle State Machine
 
-A hash proves integrity of referenced content; it does not by itself prove that a measurement is scientifically correct.
+The life cycle of an environmental bounty proceeds through 9 deterministic states:
 
-## 7. MYZ reward policy
+```text
+draft → published → available → claimed → in_progress → submitted → validation → approved → rewarded
+                                                                       ↓
+                                                                   rejected
+```
 
-MYZ, XP and reputation are separate systems.
+- **Anti-Replay Protection**: Claims register an atomic hash on the ledger preventing double payouts.
+- **Revocation Protocol**: If post-disbursement audits uncover sensor fault or fraud, rewards are flagged `REVOKED` with audit trail justification.
 
-- **MYZ** — internal ecosystem reward/spend unit.
-- **XP** — character progression.
-- **Reputation** — contribution/reliability signal.
+---
 
-Environmental MYZ rewards require:
+## 6. Differentiators Against Legacy Carbon Markets
 
-- defined bounty budget;
-- explicit evidence requirement;
-- validation policy;
-- duplicate/replay protection;
-- idempotent payment trigger;
-- auditable reward receipt.
+| Feature | Legacy Standards (Verra / Gold Standard) | MyZubster Environmental Metaverse |
+| :--- | :--- | :--- |
+| **Ingestion Latency** | Months to years (manual PDF audits) | Milliseconds to seconds (continuous IoT streaming) |
+| **Gamification** | Non-existent; institutional silos | Interactive 3D spatial metaverse & community bounties |
+| **Auditability** | Opaque third-party consulting reports | Public SHA-256 sequential cryptographic provenance chains |
+| **Micro-Rewards** | Minimum project sizes > $100,000 | Fractional MYZ micro-incentives for local biodiversity actions |
 
-Reward amount may vary by evidence level, but the policy must be declared before claim/validation.
+---
 
-## 8. Sensor and data adapter layer
-
-Supported ingestion targets:
-
-- APIs;
-- CSV/files;
-- IoT/sensor feeds;
-- future partner connectors.
-
-Adapters normalize data into the environmental observation schema while preserving source metadata, original references and quality/error information.
-
-## 9. LIFE Metaverse Pilot Zone
-
-A pilot zone is a digital environment representing a defined environmental pilot.
-
-Minimum components:
-
-- pilot overview;
-- environmental dashboard;
-- source/sensor status;
-- baseline vs outcome;
-- mission/bounty board;
-- evidence/MRV status;
-- validator status;
-- historical timeline;
-- entity/NPC guide;
-- clear `simulated`, `reported`, `sensor-backed`, `validated` labels.
-
-## 10. Scientific and partner validation
-
-Authorized validators can:
-
-- receive evidence packages;
-- inspect source and method metadata;
-- compare sensor observations with reference data/methods;
-- approve;
-- reject;
-- request additional evidence;
-- issue a versioned validation record.
-
-Validation records must identify the validation method and preserve audit/provenance references.
-
-## 11. Replication model
-
-A validated pilot should be reproducible as a template containing:
-
-- zone configuration;
-- KPIs;
-- data-source mappings;
-- evidence policies;
-- validator roles;
-- bounty templates;
-- baseline/outcome configuration;
-- reporting configuration.
-
-New territories can instantiate the template while retaining independent provenance and validation records.
-
-## 12. LIFE reporting layer
-
-Partner/reporting exports should support:
-
-- environmental KPIs;
-- baseline vs outcome;
-- evidence-level distribution;
-- validation status;
-- mission/bounty participation;
-- MYZ reward audit references;
-- replication metrics;
-- structured JSON/CSV and PDF-ready reporting models.
-
-The software can support LIFE reporting workflows, but inclusion in this specification does not imply endorsement or validation by the LIFE Programme or any prospective partner.
-
-## 13. Privacy and security boundaries
-
-- Do not expose real location, IP, wallet or private sensor credentials through world state.
-- Public identity cards expose only explicitly public attributes.
-- Narrative skills do not grant technical capabilities.
-- Reward systems require Sybil/replay/duplicate controls.
-- Partner/private pilot data require access controls.
-- Minimize personal data in evidence packages.
-
-## 14. Differentiation hypothesis
-
-The architecture is intentionally broader than a conventional entertainment metaverse. Its design hypothesis is the integration of:
-
-`persistent digital identity + interactive metaverse + bounty incentives + environmental evidence + MRV validation + digital-twin visualization + territorial replication`
-
-This is a **design/differentiation hypothesis**, not a claim of being the first implementation worldwide. Prior-art analysis must remain separate and evidence-based.
-
-## 15. Implementation roadmap
-
-### P0
-- #41 Specification & Evidence Model
-- #42 MRV Core, Provenance & Evidence Packages
-- #43 Environmental Bounty Validation & MYZ Reward Policy
-
-### P1
-- #44 Sensor & Environmental Data Adapter Layer
-- #45 LIFE Metaverse Pilot Zone & Environmental Digital Twin
-- #46 Scientific & Partner Validation Workflow
-
-### P2
-- #47 Pilot Replication Templates & Territorial Scaling
-- #48 Partner Portal & LIFE Reporting Exports
-
-## 16. Definition of success
-
-The first integrated demonstrator is successful when a participant can:
-
-1. enter a pilot zone with a persistent identity;
-2. discover and claim an environmental bounty;
-3. complete the mission;
-4. submit or generate evidence;
-5. produce an MRV evidence package;
-6. pass the bounty's declared validation policy;
-7. receive an auditable MYZ reward receipt;
-8. visualize the validated outcome in the pilot digital twin;
-9. export the result in a partner/reporting-ready form.
+## 7. Ecosystem Cross-References
+- **#31–#38**: Metaverse Foundation, Space Station 3D Canvas, and Asset Pipeline.
+- **#39–#40**: Metaverse Bounty Board & Publisher Interfaces.
+- **#42**: Environmental MRV Core, Provenance & Evidence Package Schemas.
+- **#43**: Environmental Bounty Validation & MYZ Reward Policy Engine.
+- **#44**: Multi-Source Telemetry Adapter Layer (API / CSV / IoT).
+- **#45**: LIFE Metaverse Pilot Zone & Digital Twin Engine.
+- **#46**: Scientific & Academic Partner Validation Workflow.
+- **#47**: Territorial Replication Blueprints & Regional Scaling.
+- **#48**: Partner Operations Portal & Multi-Format Environmental Exporters.
