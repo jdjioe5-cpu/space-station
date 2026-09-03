@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "RewardLedgerEntry",
+  "type": "object",
+  "required": ["rewardId", "identityId", "bountyId", "idempotencyKey", "amountMYZ", "state", "riskScore", "signature"],
+  "properties": {
+    "rewardId": { "type": "string" },
+    "identityId": { "type": "string" },
+    "bountyId": { "type": "string" },
+    "idempotencyKey": { "type": "string" },
+    "amountMYZ": { "type": "number", "minimum": 0 },
+    "riskScore": { "type": "integer", "minimum": 0, "maximum": 100 },
+    "state": {
+      "type": "string",
+      "enum": ["PENDING", "VALIDATED", "APPROVED", "PAID", "FLAGGED_MANUAL_REVIEW", "REJECTED", "REVOKED", "EXPIRED"]
+    },
+    "signature": { "type": "string" },
+    "timestamp": { "type": "string" }
+  }
+}
