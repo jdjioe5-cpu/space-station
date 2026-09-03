@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "EnvironmentalObservation",
+  "type": "object",
+  "required": ["observationId", "timestamp", "sourceId", "metrics", "qualityFlags"],
+  "properties": {
+    "observationId": { "type": "string" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "sourceId": { "type": "string" },
+    "metrics": {
+      "type": "object",
+      "required": ["temperature", "humidity"],
+      "properties": {
+        "temperature": { "type": "number" },
+        "humidity": { "type": "number" },
+        "co2": { "type": "number" }
+      }
+    },
+    "qualityFlags": { "type": "array", "items": { "type": "string" } }
+  }
+}

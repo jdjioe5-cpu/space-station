@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "MrvEvidencePackage",
+  "type": "object",
+  "required": ["packageId", "claimRef", "zoneId", "observations", "provenanceHash", "status"],
+  "properties": {
+    "packageId": { "type": "string" },
+    "claimRef": { "type": "string" },
+    "zoneId": { "type": "string" },
+    "observations": { "type": "array" },
+    "provenanceHash": { "type": "string" },
+    "status": { "type": "string", "enum": ["COLLECTED", "HASH_VERIFIED", "ACCREDITED", "REJECTED"] }
+  }
+}
