@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PrivacyRemovalRequest",
+  "type": "object",
+  "required": ["requestId", "targetHash", "status", "createdAt"],
+  "properties": {
+    "requestId": { "type": "string" },
+    "targetHash": { "type": "string" },
+    "status": {
+      "type": "string",
+      "enum": ["PENDING_APPROVAL", "SUBMITTED", "COMPLETED", "REJECTED", "CANCELLED"]
+    },
+    "approvedByHuman": { "type": "boolean" },
+    "externalProviderId": { "type": "string" },
+    "createdAt": { "type": "string" },
+    "updatedAt": { "type": "string" }
+  }
+}
