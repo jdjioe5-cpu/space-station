@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PrivacyClassificationRule",
+  "type": "object",
+  "required": ["version", "rulesetId", "fieldClassifications", "redactionPolicy"],
+  "properties": {
+    "version": { "type": "string" },
+    "rulesetId": { "type": "string" },
+    "fieldClassifications": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "enum": ["ENVIRONMENTAL", "OPERATIONAL", "PERSONAL", "SENSITIVE"]
+      }
+    },
+    "redactionPolicy": {
+      "type": "object",
+      "properties": {
+        "stripSensitive": { "type": "boolean" },
+        "pseudonymisePersonal": { "type": "boolean" },
+        "preserveEnvironmentalExact": { "type": "boolean" }
+      }
+    }
+  }
+}
