@@ -54,9 +54,9 @@ class AlienEntityManager {
     }
 
     /**
-     * Protocol #4 Structured Communication Bus
+     * Protocol #4 Structured Communication Bus (supports deterministic customId & timestamp for seed replays)
      */
-    sendMessage(senderId, recipientId, messageType, payload) {
+    sendMessage(senderId, recipientId, messageType, payload, customTimestamp = null, customId = null) {
         const sender = this.entities.get(senderId);
         const recipient = this.entities.get(recipientId);
 
@@ -64,13 +64,13 @@ class AlienEntityManager {
         if (!recipient) throw new Error(`Recipient ${recipientId} not registered`);
 
         const message = {
-            message_id: `MSG_${Date.now()}_${this.messageBus.length + 1}`,
+            message_id: customId || `MSG_${Date.now()}_${this.messageBus.length + 1}`,
             protocol_version: 'protocol.v4',
             sender: senderId,
             recipient: recipientId,
             message_type: messageType,
             payload,
-            timestamp: new Date().toISOString()
+            timestamp: customTimestamp || new Date().toISOString()
         };
 
         message.signature = crypto.createHash('sha256').update(JSON.stringify(message)).digest('hex');

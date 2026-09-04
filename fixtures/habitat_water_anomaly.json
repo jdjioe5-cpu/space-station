@@ -1,0 +1,16 @@
+{
+  "scenario_id": "SCEN_CONTACT_WATER_ANOMALY_001",
+  "is_synthetic": true,
+  "simulated_environment": "Orbital Habitat Biodome Sector 4",
+  "timestamp": "2026-09-04T14:15:00Z",
+  "ground_truth_facts": {
+    "reservoir_level_liters": 4200,
+    "baseline_level_liters": 8000,
+    "deficit_liters": 3800,
+    "deficit_percentage": 47.5,
+    "leak_detected": false,
+    "transpiration_rate_elevated": true,
+    "primary_suspect": "Hydroponic loop vapor recovery system sensor drift"
+  },
+  "anomaly_description": "Telemetry indicates available water in Sector 4 closed loop dropped by 47.5% over the past 36 hours without physical hull integrity breaches."
+}
