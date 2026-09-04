@@ -1,0 +1,28 @@
+{
+  "datasetId": "SYNTH_WATER_SPRINT1_V1",
+  "isSynthetic": true,
+  "pilotId": "LIFE_PILOT_WATER_01",
+  "description": "Sprint 1 Synthetic Water Reference Dataset strictly marked as synthetic for MRV validation.",
+  "createdAt": "2026-09-04T10:30:00Z",
+  "baselineObservations": [
+    { "timestamp": "2026-08-01T08:00:00Z", "flowRateLh": 1200, "status": "VALID", "sensorId": "FLOW_IN_01" },
+    { "timestamp": "2026-08-01T12:00:00Z", "flowRateLh": 1450, "status": "VALID", "sensorId": "FLOW_IN_01" },
+    { "timestamp": "2026-08-01T16:00:00Z", "flowRateLh": 1350, "status": "VALID", "sensorId": "FLOW_IN_01" }
+  ],
+  "interventionObservations": [
+    { "timestamp": "2026-08-15T08:00:00Z", "flowRateLh": 850, "status": "VALID", "sensorId": "FLOW_IN_01" },
+    { "timestamp": "2026-08-15T12:00:00Z", "flowRateLh": 920, "status": "VALID", "sensorId": "FLOW_IN_01" },
+    { "timestamp": "2026-08-15T16:00:00Z", "flowRateLh": 890, "status": "VALID", "sensorId": "FLOW_IN_01" }
+  ],
+  "reusedWaterObservations": [
+    { "timestamp": "2026-08-15T09:00:00Z", "reusedVolumeLiters": 300, "source": "GREYWATER_FILTER_01" },
+    { "timestamp": "2026-08-15T14:00:00Z", "reusedVolumeLiters": 280, "source": "GREYWATER_FILTER_01" }
+  ],
+  "anomaliesAndOutliers": [
+    { "timestamp": "2026-08-15T18:00:00Z", "flowRateLh": 99999, "status": "SENSOR_SPIKE_INVALID", "sensorId": "FLOW_IN_01" },
+    { "timestamp": "2026-08-15T19:00:00Z", "flowRateLh": null, "status": "MISSING_OBSERVATION", "sensorId": "FLOW_IN_01" }
+  ],
+  "labReferenceMeasurements": [
+    { "timestamp": "2026-08-15T12:00:00Z", "ph": 7.35, "turbidityNtu": 0.85, "dissolvedOxygenMgL": 8.1, "certifiedLab": "ARPA_LAB_REF_09" }
+  ]
+}
