@@ -1,6 +1,6 @@
 /**
- * 🌌 Alien Entity Framework & Multi-Agent Communication Protocol #4
- * Resolves Issue #7 (First Alien Population — 5 Entities Compatible with Zorgax)
+ * Alien Entity Management Framework & Protocol #4 Communication Bus
+ * Core implementation for Issue #7 (DanielIoni-creator/space-station)
  */
 const crypto = require('crypto');
 
@@ -38,8 +38,17 @@ class AlienEntityManager {
         if (entityConfig.simulated_entity !== true) {
             throw new Error('Entity must explicitly declare simulated_entity: true');
         }
+        if (!entityConfig.memory_namespace || typeof entityConfig.memory_namespace !== 'string' || entityConfig.memory_namespace.trim() === '') {
+            throw new Error('Invalid entity configuration: memory_namespace must be a non-empty string');
+        }
         if (this.entities.has(entityConfig.entity_id)) {
             throw new Error(`Collision detected: entity_id ${entityConfig.entity_id} already registered`);
+        }
+        // Enforce unique memory namespace across all registered entities
+        for (const existing of this.entities.values()) {
+            if (existing.memory_namespace === entityConfig.memory_namespace) {
+                throw new Error(`Collision detected: memory_namespace ${entityConfig.memory_namespace} already registered`);
+            }
         }
 
         this.entities.set(entityConfig.entity_id, entityConfig);
@@ -54,7 +63,24 @@ class AlienEntityManager {
     }
 
     /**
+     * Compute deterministic SHA-256 content integrity hash for Protocol #4 messages
+     */
+    computeContentHash(messageObj) {
+        const canonical = {
+            message_id: messageObj.message_id,
+            protocol_version: messageObj.protocol_version,
+            sender: messageObj.sender,
+            recipient: messageObj.recipient,
+            message_type: messageObj.message_type,
+            payload: messageObj.payload,
+            timestamp: messageObj.timestamp
+        };
+        return crypto.createHash('sha256').update(JSON.stringify(canonical)).digest('hex');
+    }
+
+    /**
      * Protocol #4 Structured Communication Bus
+     * Uses deterministic SHA-256 content integrity hash for payload tamper detection
      */
     sendMessage(senderId, recipientId, messageType, payload) {
         const sender = this.entities.get(senderId);
@@ -73,9 +99,18 @@ class AlienEntityManager {
             timestamp: new Date().toISOString()
         };
 
-        message.signature = crypto.createHash('sha256').update(JSON.stringify(message)).digest('hex');
+        message.content_hash = this.computeContentHash(message);
         this.messageBus.push(message);
         return message;
+    }
+
+    /**
+     * Verify Protocol #4 message content integrity
+     */
+    verifyMessage(message) {
+        if (!message || !message.content_hash) return false;
+        const expectedHash = this.computeContentHash(message);
+        return message.content_hash === expectedHash;
     }
 
     /**
