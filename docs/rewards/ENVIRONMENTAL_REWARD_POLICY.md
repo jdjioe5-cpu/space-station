@@ -1,15 +1,20 @@
-# 🪙 Environmental Bounty Validation & MYZ Reward Policy (space-station)
+# Environmental Reward Policy & Trust Model Specification
 
-Technical specification for evidence-tier reward calculations, anti-replay idempotency enforcement, and cryptographic reward disbursement receipts in **MyZubster Space Station** (resolves Issue #43).
+Resolves Issue #43 (P0).
 
----
+## Trust Model & Validator Verification Boundaries
 
-## 📌 Reward Policy Tiers
-- `UNVERIFIED`: **0 MYZ** (Strict anti-spam policy: unverified environmental claims yield zero payout).
-- `SELF_REPORTED`: **25 MYZ** (Community baseline data submissions).
-- `VERIFIED_PHYSICAL`: **100 MYZ** (Authenticated hardware IoT telemetry).
-- `PARTNER_VALIDATED`: **250 MYZ** (Institutional/academic scientific attestation).
+To prevent unauthorized economic payouts, the reward engine enforces a strict **fail-closed trust model**:
 
-## 📌 Idempotency & Replay Attack Prevention
-- Claims are tracked via an in-memory and persistent hash index.
-- Duplicate submission attempts fail deterministically with `Double-reward attempt rejected`.
+1. **Independent Validator Requirement**:
+   - `PARTNER_VALIDATED` tier (250 MYZ) CANNOT be self-declared by callers.
+   - Requires registered validator identity (e.g. `VALIDATOR_ARPA_01`, `VALIDATOR_CNR_02`).
+   - Requires valid HMAC-SHA256 attestation over `claimId:validatorId:evidenceHash:tier`.
+   - Caller-controlled self-declarations fail closed immediately.
+
+2. **Cryptographic Receipt Digest**:
+   - `receiptDigest` contains the 256-bit SHA-256 digest of the canonical disbursement payload.
+   - Payout transactions are strictly idempotent and protected by anti-replay memory barriers.
+
+3. **Evidence Linkage**:
+   - `evidenceHash` links every claim cryptographically to the immutable MRV dataset.
