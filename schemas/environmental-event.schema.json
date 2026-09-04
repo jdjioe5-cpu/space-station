@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "LIFEEnvironmentalEvent",
+  "description": "Canonical schema for anomalies, threshold exceedances, and operational events.",
+  "type": "object",
+  "required": [
+    "event_id",
+    "pilot_id",
+    "domain",
+    "event_type",
+    "severity",
+    "timestamp",
+    "description",
+    "related_observations"
+  ],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "pattern": "^EVT_[A-Za-z0-9_:-]+$"
+    },
+    "pilot_id": {
+      "type": "string",
+      "pattern": "^PILOT_[A-Za-z0-9_:-]+$"
+    },
+    "domain": {
+      "type": "string",
+      "enum": ["WATER", "ENERGY", "WASTE", "BIODIVERSITY"]
+    },
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "THRESHOLD_EXCEEDED",
+        "LEAK_DETECTED",
+        "PRESSURE_DROP",
+        "CONTAMINATION_SPIKE",
+        "FILTER_MAINTENANCE_REQUIRED",
+        "SENSOR_ANOMALY"
+      ]
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["INFO", "LOW", "MEDIUM", "HIGH", "CRITICAL"]
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 5
+    },
+    "related_observations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false
+}

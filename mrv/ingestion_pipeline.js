@@ -1,3 +1,5 @@
+const fs = require('fs');
+const path = require('path');
 /**
  * 📥 Sensor & Partner API Ingestion Pipeline
  * Resolves Issue #11 (P0.2 — Sensor & Partner API Ingestion Pipeline)
@@ -45,16 +47,47 @@ class IngestionPipeline {
      */
     _validateCanonical(payload) {
         const errors = [];
-        if (!payload.source_id) errors.push('Missing required field: source_id');
-        if (!payload.pilot_id) errors.push('Missing required field: pilot_id');
-        if (!payload.domain) errors.push('Missing required field: domain');
-        if (!payload.parameter) errors.push('Missing required field: parameter');
-        if (payload.value === undefined || payload.value === null || typeof payload.value !== 'number' || isNaN(payload.value)) {
-            errors.push('Missing or invalid numerical field: value');
+        if (!this.canonicalSchema) {
+            const schemaPath = path.join(__dirname, '../schemas/sensor-observation.schema.json');
+            if (fs.existsSync(schemaPath)) {
+                this.canonicalSchema = JSON.parse(fs.readFileSync(schemaPath, 'utf8'));
+            }
         }
-        if (!payload.unit) errors.push('Missing required field: unit');
-        if (!payload.timestamp) errors.push('Missing required field: timestamp');
-        else if (isNaN(new Date(payload.timestamp).getTime())) errors.push('Invalid ISO-8601 date format for timestamp');
+
+        if (this.canonicalSchema) {
+            // Validate required fields per Draft-07 canonical schema
+            const required = this.canonicalSchema.required || [];
+            for (const req of required) {
+                if (payload[req] === undefined || payload[req] === null) {
+                    errors.push(`Missing required field: ${req}`);
+                }
+            }
+
+            // Validate value is finite non-negative or numeric per schema
+            if (payload.value !== undefined) {
+                if (typeof payload.value !== 'number' || isNaN(payload.value)) {
+                    errors.push('Missing or invalid numerical field: value');
+                }
+            }
+
+            // Validate timestamp format
+            if (payload.timestamp && isNaN(new Date(payload.timestamp).getTime())) {
+                errors.push('Invalid ISO-8601 date-time format for timestamp');
+            }
+
+            // Validate domain enum if declared
+            if (payload.domain && this.canonicalSchema.properties?.domain?.enum) {
+                if (!this.canonicalSchema.properties.domain.enum.includes(payload.domain)) {
+                    errors.push(`Invalid domain enum: ${payload.domain}`);
+                }
+            }
+        } else {
+            // Fallback assertion
+            if (!payload.source_id) errors.push('Missing required field: source_id');
+            if (!payload.pilot_id) errors.push('Missing required field: pilot_id');
+            if (!payload.parameter) errors.push('Missing required field: parameter');
+            if (payload.value === undefined || typeof payload.value !== 'number') errors.push('Invalid value');
+        }
 
         return {
             isValid: errors.length === 0,
@@ -89,6 +122,11 @@ class IngestionPipeline {
             if (rawPayload && rawPayload.source_id) this._recordSourceMetric(rawPayload.source_id, false);
             return { success: false, status: 'REJECTED_TO_DLQ', error: dlqEntry.error, dlq_id: dlqEntry.dlq_id };
         }
+
+        // Populate canonical envelope metadata prior to validation
+        canonical.observation_id = canonical.observation_id || `OBS_${canonical.domain || 'WATER'}_${rawHash.substring(0, 16)}`;
+        canonical.provenance_ref = canonical.provenance_ref || `PROV_INGEST_${rawHash.substring(0, 16)}`;
+        canonical.quality_flag = canonical.quality_flag || 'VALID';
 
         // 2. Canonical validation
         const validation = this._validateCanonical(canonical);
