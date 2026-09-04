@@ -1,0 +1,22 @@
+{
+  "indicator_id": "IND_WATER_SAVED_8812",
+  "pilot_id": "PILOT_LIFE_ES_001",
+  "domain": "WATER",
+  "kpi_name": "water_saved_total",
+  "formula_version": "v1.0-life-water",
+  "value": 1920,
+  "unit": "L",
+  "period": {
+    "start": "2026-08-15T00:00:00.000Z",
+    "end": "2026-08-15T23:59:59.000Z"
+  },
+  "data_completeness_pct": 100,
+  "data_quality_score": 0.98,
+  "calculation_trace": {
+    "waterConsumedLiters": 2660,
+    "waterReusedLiters": 580,
+    "baselineLiters": 4000,
+    "steps": ["waterSaved = waterReused + max(0, baseline - consumed)"]
+  },
+  "signature": "d98347e3871b65e9b89710f653457a4192837491204857129481240912480124"
+}

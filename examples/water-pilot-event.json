@@ -1,0 +1,13 @@
+{
+  "event_id": "EVT_WATER_LEAK_789a",
+  "pilot_id": "PILOT_LIFE_ES_001",
+  "domain": "WATER",
+  "event_type": "LEAK_DETECTED",
+  "severity": "HIGH",
+  "timestamp": "2026-08-15T08:30:00.000Z",
+  "description": "Sudden pressure differential detected across manifold #3, indicating automated micro-leak trigger.",
+  "related_observations": [
+    "OBS_WATER_5ccff2636fba9be5",
+    "OBS_WATER_5ccff2636fba9be6"
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "LIFESensorObservation",
+  "description": "Canonical LIFE schema for discrete environmental sensor observations across water, energy, waste, and biodiversity.",
+  "type": "object",
+  "required": [
+    "observation_id",
+    "pilot_id",
+    "source_id",
+    "domain",
+    "parameter",
+    "value",
+    "unit",
+    "timestamp",
+    "location",
+    "quality_flag",
+    "provenance_ref"
+  ],
+  "properties": {
+    "observation_id": {
+      "type": "string",
+      "pattern": "^OBS_[A-Za-z0-9_:-]+$"
+    },
+    "pilot_id": {
+      "type": "string",
+      "pattern": "^PILOT_[A-Za-z0-9_:-]+$"
+    },
+    "source_id": {
+      "type": "string",
+      "minLength": 3
+    },
+    "domain": {
+      "type": "string",
+      "enum": ["WATER", "ENERGY", "WASTE", "BIODIVERSITY"]
+    },
+    "parameter": {
+      "type": "string",
+      "enum": [
+        "water_flow_rate",
+        "water_pressure",
+        "ph",
+        "turbidity",
+        "dissolved_oxygen",
+        "recycled_water_volume",
+        "active_power",
+        "energy_consumption",
+        "waste_mass",
+        "species_richness_index"
+      ]
+    },
+    "value": {
+      "type": "number"
+    },
+    "unit": {
+      "type": "string",
+      "enum": ["L/h", "m3/h", "L", "m3", "bar", "pH", "NTU", "mg/L", "kW", "kWh", "kg", "index"]
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "location": {
+      "type": "object",
+      "required": ["zone_id"],
+      "properties": {
+        "zone_id": { "type": "string" },
+        "latitude": { "type": "number", "minimum": -90, "maximum": 90 },
+        "longitude": { "type": "number", "minimum": -180, "maximum": 180 },
+        "elevation_m": { "type": "number" }
+      }
+    },
+    "quality_flag": {
+      "type": "string",
+      "enum": [
+        "VALID",
+        "OUTLIER",
+        "CALIBRATION_SUSPECT",
+        "MISSING_VALUE",
+        "LAB_VERIFIED"
+      ]
+    },
+    "provenance_ref": {
+      "type": "string",
+      "pattern": "^PROV_[A-Za-z0-9_:-]+$"
+    }
+  },
+  "additionalProperties": false
+}

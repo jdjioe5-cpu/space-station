@@ -1,0 +1,18 @@
+{
+  "observation_id": "OBS_WATER_5ccff2636fba9be5",
+  "pilot_id": "PILOT_LIFE_ES_001",
+  "source_id": "FLOW_IN_01",
+  "domain": "WATER",
+  "parameter": "water_flow_rate",
+  "value": 1250,
+  "unit": "L/h",
+  "timestamp": "2026-08-15T08:00:00.000Z",
+  "location": {
+    "zone_id": "VALENCIA_PILOT_ZONE_A",
+    "latitude": 39.4699,
+    "longitude": -0.3763,
+    "elevation_m": 15.2
+  },
+  "quality_flag": "VALID",
+  "provenance_ref": "PROV_RAW_5ccff2636fba9be5"
+}
